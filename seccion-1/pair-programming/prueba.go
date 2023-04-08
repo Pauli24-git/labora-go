@@ -1,4 +1,4 @@
-package main
+/*package main
 
 import "fmt"
 
@@ -63,3 +63,4 @@ func main() {
 	actualizarTelefono(personaNueva, 21232131)
 	fmt.Printf("Después de actualizar el teléfono: %v\n", *personaNueva)
 }
+*/
