@@ -14,7 +14,6 @@ func main() {
 	fmt.Println("Ingrese el valor numero 2: ", num2)
 
 	calcular(&num1, &num2)
-
 }
 
 func calcular(num1, num2 *int) {
