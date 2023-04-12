@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strconv"
 )
 
@@ -75,22 +76,23 @@ func ordenarEstudiantes(listaOriginal []Estudiante) {
 }
 
 func OrdenarSegunCriterio(estudiantes []Estudiante, ordenamiento int, tipoOrdenamiento int) {
-	if tipoOrdenamiento == 1 { //Por nombre
-		for i := 0; i < len(estudiantes)-1; i++ {
 
-			for j := 0; j < len(estudiantes)-1-i; j++ {
-				if ordenamiento == 1 {
-					if estudiantes[j].Nombre > estudiantes[j+1].Nombre {
-						estudiantes[j], estudiantes[j+1] = estudiantes[j+1], estudiantes[j]
-					}
-				} else {
-					if estudiantes[j].Nombre < estudiantes[j+1].Nombre {
-						estudiantes[j], estudiantes[j+1] = estudiantes[j+1], estudiantes[j]
-					}
-				}
-			}
+	fmt.Println(estudiantes)
+
+	if tipoOrdenamiento == 1 { //Por nombre
+		if ordenamiento == 1 {
+			sort.Slice(estudiantes, func(i, j int) bool {
+				return estudiantes[i].Nombre < estudiantes[j].Nombre
+			})
+
+		} else {
+			sort.Slice(estudiantes, func(i, j int) bool {
+				return estudiantes[i].Nombre > estudiantes[j].Nombre
+			})
 		}
 	}
+
+	fmt.Println(estudiantes)
 
 	if tipoOrdenamiento == 2 { //Por nota
 		for i := 0; i < len(estudiantes)-1; i++ {
@@ -125,7 +127,6 @@ func OrdenarSegunCriterio(estudiantes []Estudiante, ordenamiento int, tipoOrdena
 			}
 		}
 	}
-
 }
 
 func buscarEstudiante(listaOriginal []Estudiante) {
