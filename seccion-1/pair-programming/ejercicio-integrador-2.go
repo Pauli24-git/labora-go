@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 func main() {
 
@@ -15,11 +18,10 @@ func main() {
 		case numeroIngresado == 1:
 			Estudiantes = append(Estudiantes, crearNuevoEstudiante())
 		case numeroIngresado == 2:
-			fmt.Println("")
+			ordenarEstudiantes(Estudiantes)
 		case numeroIngresado == 3:
-			fmt.Println("")
+			buscarEstudiante(Estudiantes)
 		}
-		fmt.Println(Estudiantes)
 		fmt.Println("Ingrese la accion que desea realizar:\n 1) Crear estudiante\n 2) Ordenar la lista\n 3) Buscar estudiante\n 4) Salir del programa\n")
 		fmt.Scan(&numeroIngresado)
 	}
@@ -59,7 +61,7 @@ func crearNuevoEstudiante() Estudiante {
 	return estudianteIngresado
 }
 
-func ordenarEstudiantes(listaOriginal []Estudiante) []Estudiante {
+func ordenarEstudiantes(listaOriginal []Estudiante) {
 	var opcionEstudiante int
 	var opcionOrden int
 
@@ -68,13 +70,106 @@ func ordenarEstudiantes(listaOriginal []Estudiante) []Estudiante {
 	fmt.Println("Indique orden 1) Ascendente \n 2) Descendente")
 	fmt.Scan(&opcionOrden)
 
-	switch {
-	case opcionEstudiante == 1:
-		OrdenarPorNombre(&listaOriginal, opcionOrden)
+	OrdenarSegunCriterio(listaOriginal, opcionEstudiante, opcionOrden)
+
+}
+
+func OrdenarSegunCriterio(estudiantes []Estudiante, ordenamiento int, tipoOrdenamiento int) {
+	if tipoOrdenamiento == 1 { //Por nombre
+		for i := 0; i < len(estudiantes)-1; i++ {
+
+			for j := 0; j < len(estudiantes)-1-i; j++ {
+				if ordenamiento == 1 {
+					if estudiantes[j].Nombre > estudiantes[j+1].Nombre {
+						estudiantes[j], estudiantes[j+1] = estudiantes[j+1], estudiantes[j]
+					}
+				} else {
+					if estudiantes[j].Nombre < estudiantes[j+1].Nombre {
+						estudiantes[j], estudiantes[j+1] = estudiantes[j+1], estudiantes[j]
+					}
+				}
+			}
+		}
+	}
+
+	if tipoOrdenamiento == 2 { //Por nota
+		for i := 0; i < len(estudiantes)-1; i++ {
+
+			for j := 0; j < len(estudiantes)-1-i; j++ {
+				if ordenamiento == 1 {
+					if estudiantes[j].Nota > estudiantes[j+1].Nota {
+						estudiantes[j], estudiantes[j+1] = estudiantes[j+1], estudiantes[j]
+					}
+				} else {
+					if estudiantes[j].Nota < estudiantes[j+1].Nota {
+						estudiantes[j], estudiantes[j+1] = estudiantes[j+1], estudiantes[j]
+					}
+				}
+			}
+		}
+	}
+
+	if tipoOrdenamiento == 3 { //Por codigo
+		for i := 0; i < len(estudiantes)-1; i++ {
+
+			for j := 0; j < len(estudiantes)-1-i; j++ {
+				if ordenamiento == 1 {
+					if estudiantes[j].Codigo > estudiantes[j+1].Codigo {
+						estudiantes[j], estudiantes[j+1] = estudiantes[j+1], estudiantes[j]
+					}
+				} else {
+					if estudiantes[j].Codigo < estudiantes[j+1].Codigo {
+						estudiantes[j], estudiantes[j+1] = estudiantes[j+1], estudiantes[j]
+					}
+				}
+			}
+		}
 	}
 
 }
 
-func OrdenarPorNombre(lista *[]Estudiante, ordenamiento int) {
+func buscarEstudiante(listaOriginal []Estudiante) {
+	var opcionAtributo string
+	var opcionValor string
+
+	fmt.Println("Indique cual atributo desea buscar:\n 1) Segun Nombre \n2)Segun Nota \n 3)Segun Codigo")
+	fmt.Scan(&opcionAtributo)
+	fmt.Println("Ingrese el valor:\n ")
+	fmt.Scan(&opcionValor)
+
+	var opcionValorConvertida int64
+
+	opcionValorConvertida, _ = strconv.ParseInt(opcionAtributo, 10, 64)
+
+	if opcionValorConvertida == 1 {
+		for i := 0; i < len(listaOriginal); i++ {
+			if opcionValor == listaOriginal[i].Nombre {
+				fmt.Println("Usuario encontrado\n")
+				fmt.Println(listaOriginal[i])
+			}
+		}
+	}
+
+	if opcionValorConvertida == 2 {
+		for i := 0; i < len(listaOriginal); i++ {
+			var opcionConvertida float64
+
+			opcionConvertida, _ = strconv.ParseFloat(opcionValor, 64)
+
+			if opcionConvertida == listaOriginal[i].Nota {
+				fmt.Println("Usuario encontrado\n")
+				fmt.Println(listaOriginal[i])
+			}
+		}
+	}
+
+	if opcionValorConvertida == 3 {
+		for i := 0; i < len(listaOriginal); i++ {
+			if opcionValor == listaOriginal[i].Codigo {
+				fmt.Println("Usuario encontrado\n")
+				fmt.Println(listaOriginal[i])
+			}
+		}
+	}
 
 }
