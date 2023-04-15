@@ -26,6 +26,45 @@ func main() {
 		fmt.Println("Ingrese la accion que desea realizar:\n 1) Crear estudiante\n 2) Ordenar la lista\n 3) Buscar estudiante\n 4) Salir del programa\n")
 		fmt.Scan(&numeroIngresado)
 	}
+	defer func(estudiantes []Estudiante) {
+		var (
+			suma     float64
+			promedio float64
+		)
+		//		fmt.Println(len(estudiantes))
+		for i := 0; i < len(estudiantes); i++ {
+			suma = estudiantes[i].Nota + suma
+		}
+		//		fmt.Println(suma)
+		promedio = suma / float64(len(estudiantes))
+		fmt.Printf("El promedio de las notas es %.2f ", promedio)
+	}(Estudiantes)
+
+	defer func(estudiantes []Estudiante) {
+		var (
+			maxnota   float64
+			minnota   float64
+			alumnomax Estudiante
+			alumnomin Estudiante
+		)
+		minnota = estudiantes[0].Nota
+		alumnomin = estudiantes[0]
+		for i := 0; i < len(estudiantes); i++ {
+			if estudiantes[i].Nota > maxnota {
+				maxnota = estudiantes[i].Nota
+				alumnomax = estudiantes[i]
+			}
+			if estudiantes[i].Nota < minnota {
+				minnota = estudiantes[i].Nota
+				alumnomin = estudiantes[i]
+			}
+
+		}
+		fmt.Printf("El estudiante con mayor nota es:\n\t Nombre: %s, Nota: %.2f, Codigo: %s\n", alumnomax.Nombre, alumnomax.Nota, alumnomax.Codigo)
+		fmt.Printf("El estudiante con menor nota es:\n\t Nombre: %s, Nota: %.2f, Codigo: %s\n\n", alumnomin.Nombre, alumnomin.Nota, alumnomin.Codigo)
+
+	}(Estudiantes)
+
 }
 
 type Estudiante struct {
@@ -78,6 +117,8 @@ func ordenarEstudiantes(listaOriginal []Estudiante) {
 func OrdenarSegunCriterio(estudiantes []Estudiante, ordenamiento int, tipoOrdenamiento int) {
 
 	fmt.Println(estudiantes)
+
+	//Aca probe con sort.Slice para recorrer y ordenar segun criterio. Esta manera la encontre despues de subir el ejercicio, pero no entendi muy bien como funciona el sort...
 
 	if tipoOrdenamiento == 1 { //Por nombre
 		if ordenamiento == 1 {
