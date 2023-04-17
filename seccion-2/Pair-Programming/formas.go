@@ -1,79 +1,87 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
-
-type Shape interface {
-	Area() float64
-}
-
-type Triangle struct {
-	Base   float64
-	Height float64
-}
-
-func (t Triangle) Area() float64 {
-	return 0.5 * t.Base * t.Height
-}
-
-type Rectangle struct {
-	Width  float64
-	Height float64
-}
-
-func (r Rectangle) Area() float64 {
-	return r.Width * r.Height
-}
-
-type Circle struct {
-	Radius float64
-}
-
-func (c Circle) Area() float64 {
-	return math.Pi * c.Radius * c.Radius
-}
-
-type Trapezoid struct {
-	Base1  float64
-	Base2  float64
-	Height float64
-}
-
-func (t Trapezoid) Area() float64 {
-	return 0.5 * (t.Base1 + t.Base2) * t.Height
-}
-
-type Polygon struct {
-	Sides  int
-	Length float64
-}
-
-func (p Polygon) Area() float64 {
-	return (p.Length * p.Length * float64(p.Sides)) / (4 * math.Tan(math.Pi/float64(p.Sides)))
-}
+import "fmt"
 
 func main() {
-	shapes := map[string]Shape{
-		"triangle":  Triangle{Base: 4, Height: 5},
-		"rectangle": Rectangle{Width: 10, Height: 2},
-		"circle":    Circle{Radius: 3},
-		"trapezoid": Trapezoid{Base1: 5, Base2: 3, Height: 4},
-		"pentagon":  Polygon{Sides: 5, Length: 3},
+	miTriangulo := triangulo{base: 2.7, altura: 5.6}
+	miRectangulo := rectangulo{base: 10.6, altura: 9.8}
+	miCirculo := circulo{radio: 1.2}
+	miTrapecio := trapecio{base1: 2.2, base2: 4.5, altura: 8.1}
+	miPoligono := poligono{apotema: 10.8, perimetro: 15.3}
+
+	objetos := make(map[string]Shapes)
+
+	objetos["Triangulo"] = miTriangulo
+	objetos["Rectangulo"] = miRectangulo
+	objetos["Circulo"] = miCirculo
+	objetos["Trapecio"] = miTrapecio
+	objetos["Poligono"] = miPoligono
+
+	for _, o := range objetos {
+		imprimirArea(o)
 	}
+}
 
-	for name, shape := range shapes {
-		defer func() {
-			if r := recover(); r != nil {
-				fmt.Println("Error:", r)
-			}
-		}()
-
-		area := shape.Area()
-		if area > 100 {
-			panic("El Area es demasiado grande")
+func imprimirArea(s Shapes) {
+	if s.area() > 100 {
+		panic("Error, el area es demasiado grande")
+	} else {
+		fmt.Println(s.area())
+	}
+	defer func() {
+		cadena := recover()
+		if cadena != nil {
+			fmt.Println(cadena)
 		}
-		fmt.Printf("Shape: %s, Area: %f\n", name, area)
-	}
+	}()
+}
+
+type triangulo struct {
+	base   float64
+	altura float64
+}
+
+func (t triangulo) area() float64 {
+	return (t.base * t.altura) / 2
+}
+
+type rectangulo struct {
+	base   float64
+	altura float64
+}
+
+func (r rectangulo) area() float64 {
+	return r.base * r.altura
+}
+
+type circulo struct {
+	radio float64
+}
+
+func (ci circulo) area() float64 {
+	return 3.14 * (ci.radio * ci.radio)
+}
+
+type trapecio struct {
+	base1  float64
+	base2  float64
+	altura float64
+}
+
+func (t trapecio) area() float64 {
+	return ((t.base1 + t.base2) / 2) * t.altura
+}
+
+type poligono struct {
+	lado      int
+	apotema   float64
+	perimetro float64
+}
+
+func (p poligono) area() float64 {
+	return (p.apotema * p.perimetro) / 2
+}
+
+type Shapes interface {
+	area() float64
 }
