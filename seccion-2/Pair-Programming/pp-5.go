@@ -23,12 +23,14 @@ func CrearMensaje(tipo string) Mensaje {
 
 	return mensaje
 }
+
 func procesarEmail(ch chan<- Mensaje, mensajes *[]Mensaje) {
 	mensaje := CrearMensaje("Email")
 
 	ch <- mensaje
 	time.Sleep(time.Second)
 	fmt.Println("Email enviado")
+
 }
 
 func procesarSMS(ch chan<- Mensaje, mensajes *[]Mensaje) {
@@ -86,5 +88,4 @@ func ProcesarMensaje() {
 			fmt.Println("Opción incorrecta, intente otra vez")
 		}
 	}
-
 }
