@@ -1,0 +1,38 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "¡Hola, mundo!")
+	})
+
+	http.HandleFunc("/hola", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "¡chau,m !")
+	})
+
+	http.HandleFunc("/posts", PostsHandler)
+
+	http.ListenAndServe(":8080", nil)
+}
+
+func PostsHandler(w http.ResponseWriter, r *http.Request) {
+
+	posts := []Post{
+		Post{"", "John", "This is first post."},
+		Post{"Post two", "Jane", "This is second post."},
+		Post{"Post three", "John", "This is another post."},
+	}
+
+	json.NewEncoder(w).Encode(posts)
+}
+
+type Post struct {
+	Title  string `json:"Title"`
+	Author string `json:"Author"`
+	Text   string `json:"Text"`
+}
